@@ -93,6 +93,12 @@ sub new {
     # TODO set config setting
     $Self->{CacheTTL} = int( $Self->{ConfigObject}->Get('CRKPIs::CacheTTL') || 3600 );
 
+    # set lower if database is case sensitive
+    $Self->{Lower} = '';
+    if ( $Self->{DBObject}->GetDatabaseFunction('CaseSensitive') ) {
+        $Self->{Lower} = 'LOWER';
+    }
+
     return $Self;
 }
 
@@ -115,7 +121,7 @@ sub KPIAdd {
     my ( $Self, %Param ) = @_;
 
     # check needed parameters
-    for my $Needed (qw(Name Config ValidID GroupIDs UserID)) {
+    for my $Needed (qw(Name Config Object ValidID GroupIDs UserID)) {
         if ( !$Param{$Needed} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
@@ -126,10 +132,10 @@ sub KPIAdd {
     }
 
     # check GroupID
-    if ( !IsArrayRefWithData( $Param{GroupID} ) ) {
+    if ( !IsArrayRefWithData( $Param{GroupIDs} ) ) {
         $Self->{LogObject}->Log(
             Priority => 'error',
-            Message  => "KPI GropIDs should be a non empty array reference!",
+            Message  => "KPI GroupIDs should be a non empty array reference!",
         );
         return;
     }
@@ -179,7 +185,7 @@ sub KPIAdd {
                 change_time, change_by)
             VALUES (?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)',
         Bind => [
-            \$Param{Name},     \$Param{Comments}, \$Param{Object}, \$Param{Config},
+            \$Param{Name},  \$Param{Comments}, \$Param{Object}, \$Config,
             \$Param{ValidID}, \$Param{UserID}, \$Param{UserID},
         ],
     );
@@ -247,6 +253,7 @@ sub KPIDelete {
     my $KPI = $Self->KPIGet(
         ID => $Param{ID},
     );
+
     return if !IsHashRefWithData($KPI);
 
     # delete KPI group ids
@@ -344,8 +351,9 @@ sub KPIGet {
         return if !$Self->{DBObject}->Prepare(
             SQL =>'
                 SELECT id, name, comments,object, config, valid_id, create_time, create_by,
-                    change_time, change_by,
-                FROM dtt WHERE id = ?',
+                    change_time, change_by
+                FROM cr_kpi
+                WHERE id = ?',
             Bind => [ \$Param{ID} ],
         );
     }
@@ -353,8 +361,9 @@ sub KPIGet {
         return if !$Self->{DBObject}->Prepare(
             SQL =>'
                 SELECT id, name, comments, object, config, valid_id, create_time, create_by,
-                    change_time, change_by,
-                FROM dtt WHERE id = ?',
+                    change_time, change_by
+                FROM cr_kpi
+                WHERE id = ?',
             Bind => [ \$Param{Name} ],
         );
     }
@@ -416,7 +425,7 @@ sub KPIGet {
         TTL   => $Self->{CacheTTL},
     );
 
-    return %KPI;
+    return \%KPI;
 }
 
 =item KPIUpdate()
@@ -442,7 +451,7 @@ sub KPIUpdate {
     my ( $Self, %Param ) = @_;
 
     # check needed parameters
-    for my $Needed (qw(Name Config ValidID GroupIDs UserID)) {
+    for my $Needed (qw(Name Config Object ValidID GroupIDs UserID)) {
         if ( !$Param{$Needed} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
@@ -453,10 +462,10 @@ sub KPIUpdate {
     }
 
     # check GroupID
-    if ( !IsArrayRefWithData( $Param{GroupID} ) ) {
+    if ( !IsArrayRefWithData( $Param{GroupIDs} ) ) {
         $Self->{LogObject}->Log(
             Priority => 'error',
-            Message  => "KPI GropIDs should be a non empty array reference!",
+            Message  => "KPI GroupIDs should be a non empty array reference!",
         );
         return;
     }
@@ -507,7 +516,7 @@ sub KPIUpdate {
             SET  name = ?, comments = ?, object = ?, config = ?, valid_id = ?,
                 change_time = current_timestamp, change_by = ?',
         Bind => [
-            \$Param{Name},  \$Param{Comments}, \$Param{Object}, \$Param{Config}, \$Param{ValidID},
+            \$Param{Name},  \$Param{Comments}, \$Param{Object}, \$Config, \$Param{ValidID},
             \$Param{UserID},
         ],
     );
