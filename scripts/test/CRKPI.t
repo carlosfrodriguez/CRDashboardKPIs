@@ -1,6 +1,6 @@
 # --
 # CRKPI.t - KPI tests
-# Copyright (C) 2001-2013 Carlos Rodr�guez
+# Copyright (C) 2001-2013 Carlos Rodríguez
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -210,7 +210,21 @@ my @Tests = (
         },
         Success => 0,
     },
-
+    {
+        Name    => 'Correct with UTF8',
+        Config  => {
+            Name          => 'New KPI ÁÉáéóäëñßカスタマПфия',
+            Comments      => 'A description of the new KPI ÁÉáéóäëñßカスタマПфия',
+            Object        => 'Generic',
+            Config        => {
+                Test => 'ÁÉáéóäëñßカスタマПфия',
+            },
+            ValidID       => 1,
+            GroupIDs      => [1,2,3],
+            UserID        => $UserID,
+        },
+        Success => 1,
+    },
 );
 
 for my $Test (@Tests) {
@@ -225,7 +239,32 @@ for my $Test (@Tests) {
         $Self->IsNot(
             $KPIID,
             undef,
-            "$Test->{Name} KPIADD() | should not be undef",
+            "$Test->{Name} KPIAdd() | should not be undef",
+        );
+
+        # also do success tests from KPIGet() to save time and effort
+        my $KPI = $KPIObject->KPIGet( ID => $KPIID );
+
+        $Self->Is(
+            $KPI->{ID},
+            $KPIID,
+            "$Test->{Name} KPIGet() after KPIAdd() | ID"
+        );
+
+        # remove the attributes for easy compare
+        delete $KPI->{ID};
+        delete $KPI->{CreateTime};
+        delete $KPI->{CreateBy};
+        delete $KPI->{ChangeTime};
+        delete $KPI->{ChangeBy};
+
+        # add UserID for easy compare
+        $KPI->{UserID} = $UserID;
+
+        $Self->IsDeeply(
+            $KPI,
+            $Test->{Config},
+            "$Test->{Name} KPIGet() after KPIAdd() | results"
         );
     }
     else {
