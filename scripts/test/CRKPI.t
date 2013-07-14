@@ -276,6 +276,85 @@ for my $Test (@Tests) {
     }
 }
 
+# KPIDelete tests (Other delete tests are also done in system cleanup)
+
+# create a new KPI to delete
+my $KPIIDToDelete = $KPIObject->KPIAdd(
+    Name          => 'KPI to delete',
+    Comments      => 'A description of the new KPI',
+    Object        => 'Generic',
+    Config        => {
+        Test => 1
+    },
+    ValidID       => 1,
+    GroupIDs      => [ 1, 2, 3],
+    UserID        => $UserID,
+);
+
+# sanity test
+$Self->IsNot(
+    $KPIIDToDelete,
+    undef,
+    'KPIADD() for KPIDelete() tests | should not be undef',
+);
+
+@Tests = (
+    {
+        Name    => 'Empty Params',
+        Config  => {},
+        Success => 0,
+    },
+    {
+        Name    => 'Missing ID',
+        Config  => {
+            ID     => undef,
+            UserID => $UserID,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing UserID',
+        Config  => {
+            ID     => $KPIIDToDelete,
+            UserID => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Correct KPI to delete',
+        Config  => {
+            ID     => $KPIIDToDelete,
+            UserID => $UserID,
+        },
+        Success => 1,
+    },
+    {
+        Name    => 'Already deleted KPI',
+        Config  => {
+            ID     => $KPIIDToDelete,
+            UserID => $UserID,
+        },
+        Success => 0,
+    },
+);
+
+for my $Test (@Tests) {
+    my $Success = $KPIObject->KPIDelete( %{ $Test->{Config} } );
+
+    if ( $Test->{Success} ) {
+        $Self->True(
+            $Success,
+            "$Test->{Name} KPIDelete() | With True",
+        );
+    }
+    else {
+        $Self->False(
+            $Success,
+            "$Test->{Name} KPIDelete() | With False",
+        );
+    }
+}
+
 # System Cleanup
 for my $KPIID (@AddedKPIs) {
     my $Success = $KPIObject->KPIDelete(
