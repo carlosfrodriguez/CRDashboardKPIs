@@ -109,7 +109,7 @@ add a new KPI
     my $ID = $KPIObject->KPIAdd(
         Name          => 'New KPI',
         Comments      => 'A description of the new KPI',
-        Object        => 'Ticket'                             # Generic, or FAQ or ITSMCI or ITSMChange, etc.
+        Object        => 'Ticket',                            # Generic, or FAQ or ITSMCI or ITSMChange, etc.
         Config        => $ConfigHashRef,
         ValidID       => 1,
         GroupIDs      => [ 1, 2, 3],
