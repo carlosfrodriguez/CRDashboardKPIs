@@ -355,6 +355,140 @@ for my $Test (@Tests) {
     }
 }
 
+# KPIGet() tests (other tests has been done in other parts of this file)
+
+# create a new KPI to Get
+my %KPIToGet = (
+    Name          => 'KPI to Get',
+    Comments      => 'A description of the new KPI',
+    Object        => 'Generic',
+    Config        => {
+        Test => 1
+    },
+    ValidID       => 1,
+    GroupIDs      => [ 1, 2, 3],
+    UserID        => $UserID,
+);
+my $KPIIDToGet = $KPIObject->KPIAdd(%KPIToGet);
+
+# sanity test
+$Self->IsNot(
+    $KPIIDToGet,
+    undef,
+    'KPIADD() for KPIGet() tests | should not be undef',
+);
+
+
+# Add the ID
+$KPIToGet{ID} = $KPIIDToGet;
+push @AddedKPIs, $KPIIDToGet;
+
+@Tests = (
+    {
+        Name    => 'Empty Params',
+        Config  => {},
+        Success => 0,
+    },
+    {
+        Name    => 'Missing ID',
+        Config  => {
+            ID => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing Name',
+        Config  => {
+            Name => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Wrong ID',
+        Config  => {
+            ID => -1,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Wrong Name',
+        Config  => {
+            Name => 'NotExisitng' . $RandomID,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Both ID and Name',
+        Config  => {
+            ID   => $KPIToGet{ID},
+            Name => $KPIToGet{Name},
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Correct ID',
+        Config  => {
+            ID   => $KPIToGet{ID},
+        },
+        Success => 1,
+    },
+    {
+        Name    => 'Correct Name',
+        Config  => {
+            Name => $KPIToGet{Name},
+        },
+        Success => 1,
+    },
+);
+
+for my $Test (@Tests) {
+    my $KPI = $KPIObject->KPIGet( %{ $Test->{Config} } );
+
+    if ( $Test->{Success} ) {
+
+        my $CacheKey;
+        # check the cache
+        if ( $Test->{Config}->{ID} ) {
+            $CacheKey = 'KPIGet::ID::' . $Test->{Config}->{ID};
+        }
+        else {
+            $CacheKey = 'KPIGet::Name::' . $Test->{Config}->{Name};
+
+        }
+        my $Cache = $KPIObject->{CacheObject}->Get(
+            Type => 'CRKPI',
+            Key  => $CacheKey,
+        );
+
+        $Self->IsDeeply(
+            $KPI,
+            $Cache,
+            "$Test->{Name} KPIGet() cache |"
+        );
+
+        # remove the attributes for easy compare
+        delete $KPI->{CreateTime};
+        delete $KPI->{CreateBy};
+        delete $KPI->{ChangeTime};
+        delete $KPI->{ChangeBy};
+
+        $KPI->{UserID} = $UserID;
+
+        $Self->IsDeeply(
+            $KPI,
+            \%KPIToGet,
+             "$Test->{Name} KPIGet() |",
+        );
+    }
+    else {
+        $Self->Is(
+            $KPI,
+            undef,
+            "$Test->{Name} KPIGet() | should be undef",
+        );
+    }
+}
+
 # System Cleanup
 for my $KPIID (@AddedKPIs) {
     my $Success = $KPIObject->KPIDelete(
