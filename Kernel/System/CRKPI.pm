@@ -363,7 +363,7 @@ sub KPIGet {
                 SELECT id, name, comments, object, config, valid_id, create_time, create_by,
                     change_time, change_by
                 FROM cr_kpi
-                WHERE id = ?',
+                WHERE name = ?',
             Bind => [ \$Param{Name} ],
         );
     }
