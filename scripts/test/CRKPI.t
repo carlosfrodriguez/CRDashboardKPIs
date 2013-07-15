@@ -41,7 +41,7 @@ my @Tests = (
         Config  => {
             Name          => undef,
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -56,7 +56,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => undef,
+            ObjectType    => undef,
             Config        => {
                 Test => 1,
             },
@@ -71,7 +71,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => undef,
             ValidID       => 1,
             GroupIDs      => [ 1, 2, 3],
@@ -84,7 +84,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -99,7 +99,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -114,7 +114,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -129,7 +129,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => 'Test',
             ValidID       => 1,
             GroupIDs      => [ 1, 2, 3],
@@ -142,7 +142,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {},
             ValidID       => 1,
             GroupIDs      => [ 1, 2, 3],
@@ -155,7 +155,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -170,7 +170,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -185,7 +185,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -200,7 +200,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 1,
             },
@@ -215,7 +215,7 @@ my @Tests = (
         Config  => {
             Name          => 'New KPI ÁÉáéóäëñßカスタマПфия',
             Comments      => 'A description of the new KPI ÁÉáéóäëñßカスタマПфия',
-            Object        => 'Generic',
+            ObjectType    => 'Generic',
             Config        => {
                 Test => 'ÁÉáéóäëñßカスタマПфия',
             },
@@ -282,7 +282,7 @@ for my $Test (@Tests) {
 my $KPIIDToDelete = $KPIObject->KPIAdd(
     Name          => 'KPI to delete',
     Comments      => 'A description of the new KPI',
-    Object        => 'Generic',
+    ObjectType    => 'Generic',
     Config        => {
         Test => 1
     },
@@ -361,7 +361,7 @@ for my $Test (@Tests) {
 my %KPIToGet = (
     Name          => 'KPI to Get',
     Comments      => 'A description of the new KPI',
-    Object        => 'Generic',
+    ObjectType    => 'Generic',
     Config        => {
         Test => 1
     },

@@ -109,7 +109,7 @@ add a new KPI
     my $ID = $KPIObject->KPIAdd(
         Name          => 'New KPI',
         Comments      => 'A description of the new KPI',
-        Object        => 'Generic',                            # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
+        ObjectType    => 'Generic',                            # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
         Config        => $ConfigHashRef,
         ValidID       => 1,
         GroupIDs      => [ 1, 2, 3],
@@ -121,7 +121,7 @@ sub KPIAdd {
     my ( $Self, %Param ) = @_;
 
     # check needed parameters
-    for my $Needed (qw(Name Config Object ValidID GroupIDs UserID)) {
+    for my $Needed (qw(Name Config ObjectType ValidID GroupIDs UserID)) {
         if ( !$Param{$Needed} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
@@ -181,11 +181,11 @@ sub KPIAdd {
     # create the kpi entry in the DB
     return if !$Self->{DBObject}->Do(
         SQL => '
-            INSERT INTO cr_kpi (name, comments, object, config, valid_id, create_time, create_by,
+            INSERT INTO cr_kpi (name, comments, object_type, config, valid_id, create_time, create_by,
                 change_time, change_by)
             VALUES (?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)',
         Bind => [
-            \$Param{Name},  \$Param{Comments}, \$Param{Object}, \$Config,
+            \$Param{Name},  \$Param{Comments}, \$Param{Object_Type}, \$Config,
             \$Param{ValidID}, \$Param{UserID}, \$Param{UserID},
         ],
     );
@@ -298,7 +298,7 @@ Returns:
         ID                  => '34',
         Name                => 'KPI Name',
         Comments            => 'This is a default KPI',
-        Object              => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
+        ObjectType          => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
         Config              => $ConfigHashRef,
         GroupIDs            => [1, 2, 3],
         ValidID             => '1',
@@ -350,7 +350,7 @@ sub KPIGet {
     if ( $Param{ID} ) {
         return if !$Self->{DBObject}->Prepare(
             SQL =>'
-                SELECT id, name, comments,object, config, valid_id, create_time, create_by,
+                SELECT id, name, comments, object_type, config, valid_id, create_time, create_by,
                     change_time, change_by
                 FROM cr_kpi
                 WHERE id = ?',
@@ -360,7 +360,7 @@ sub KPIGet {
     else {
         return if !$Self->{DBObject}->Prepare(
             SQL =>'
-                SELECT id, name, comments, object, config, valid_id, create_time, create_by,
+                SELECT id, name, comments, object_type, config, valid_id, create_time, create_by,
                     change_time, change_by
                 FROM cr_kpi
                 WHERE name = ?',
@@ -376,7 +376,7 @@ sub KPIGet {
         $KPI{ID}         = $Row[0];
         $KPI{Name}       = $Row[1];
         $KPI{Comments}   = $Row[2];
-        $KPI{Object}     = $Row[3];
+        $KPI{ObjectType} = $Row[3];
         $KPI{Config}     = $Config;
         $KPI{ValidID}    = $Row[5];
         $KPI{CreateTime} = $Row[6];
@@ -435,7 +435,7 @@ update KPI details
     my $Success = $KPIObject->KPIAdd(
         Name          => 'New KPI',
         Comments      => 'A description of the new KPI',
-        Object        => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
+        ObjectType    => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
         Config        => $ConfigHashRef,
         ValidID       => 1,
         GroupIDs      => [ 1, 2, 3],
@@ -451,7 +451,7 @@ sub KPIUpdate {
     my ( $Self, %Param ) = @_;
 
     # check needed parameters
-    for my $Needed (qw(Name Config Object ValidID GroupIDs UserID)) {
+    for my $Needed (qw(Name Config ObjectType ValidID GroupIDs UserID)) {
         if ( !$Param{$Needed} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
@@ -513,10 +513,10 @@ sub KPIUpdate {
     return if !$Self->{DBObject}->Do(
         SQL => '
             UPDATE cr_kpi
-            SET  name = ?, comments = ?, object = ?, config = ?, valid_id = ?,
+            SET  name = ?, comments = ?, object_type = ?, config = ?, valid_id = ?,
                 change_time = current_timestamp, change_by = ?',
         Bind => [
-            \$Param{Name},  \$Param{Comments}, \$Param{Object}, \$Config, \$Param{ValidID},
+            \$Param{Name},  \$Param{Comments}, \$Param{ObjectType}, \$Config, \$Param{ValidID},
             \$Param{UserID},
         ],
     );
