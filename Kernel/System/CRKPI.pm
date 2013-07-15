@@ -109,7 +109,7 @@ add a new KPI
     my $ID = $KPIObject->KPIAdd(
         Name          => 'New KPI',
         Comments      => 'A description of the new KPI',
-        Object        => 'Ticket',                            # Generic, or FAQ or ITSMCI or ITSMChange, etc.
+        Object        => 'Generic',                            # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
         Config        => $ConfigHashRef,
         ValidID       => 1,
         GroupIDs      => [ 1, 2, 3],
@@ -284,21 +284,21 @@ sub KPIDelete {
 
 get KPI details
 
-    my %KPI = $KPIObject->KPIGet(
+    my $KPI = $KPIObject->KPIGet(
         ID => 34,
     );
 
-    my %KPI = $KPIObject->KPIGet(
+    my $KPI = $KPIObject->KPIGet(
         Name => 'KPI Name',
     );
 
 Returns:
 
-    %KPI = (
+    %KPI = {
         ID                  => '34',
         Name                => 'KPI Name',
         Comments            => 'This is a default KPI',
-        Object              => 'Ticket'                             # Generic, or FAQ or ITSMCI or ITSMChange, etc.
+        Object              => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
         Config              => $ConfigHashRef,
         GroupIDs            => [1, 2, 3],
         ValidID             => '1',
@@ -306,7 +306,7 @@ Returns:
         CreateBy            => '12',
         ChangeTime          => '2011-12-02 10:45:01',
         ChangeBy            => '8',
-    );
+    };
 
 =cut
 
@@ -435,7 +435,7 @@ update KPI details
     my $Success = $KPIObject->KPIAdd(
         Name          => 'New KPI',
         Comments      => 'A description of the new KPI',
-        Object        => 'Ticket'                             # Generic, or FAQ or ITSMCI or ITSMChange, etc.
+        Object        => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
         Config        => $ConfigHashRef,
         ValidID       => 1,
         GroupIDs      => [ 1, 2, 3],
