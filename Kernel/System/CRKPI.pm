@@ -166,7 +166,7 @@ sub KPIAdd {
     if ($NameExists) {
         $Self->{LogObject}->Log(
             Priority => 'error',
-            Message  => "The name $Param{Name} already exists for a KPI!"
+            Message  => "The name: '$Param{Name}' already exists for a KPI!"
         );
         return;
     }
@@ -498,7 +498,7 @@ sub KPIUpdate {
     if ($NameExists) {
         $Self->{LogObject}->Log(
             Priority => 'error',
-            Message  => "The name $Param{Name} already exists for a KPI!"
+            Message  => "The name: '$Param{Name}' already exists for a KPI!"
         );
         return;
     }
