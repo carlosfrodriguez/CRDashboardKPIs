@@ -14,6 +14,7 @@ use vars (qw($Self));
 
 use Kernel::System::CRKPI;
 use Kernel::System::UnitTest::Helper;
+use Kernel::System::VariableCheck qw(:all);
 
 my $HelperObject = Kernel::System::UnitTest::Helper->new(
     %$Self,
@@ -695,7 +696,49 @@ for my $Test (@Tests) {
             "$Test->{Name} KPIUpdate() | With False",
         );
     }
+}
 
+# KPIList() tests
+my $ArrayList = $KPIObject->KPIList();
+
+$Self->True(
+    IsArrayRefWithData($ArrayList),
+    "KPIList() Array | Has Data with true"
+);
+$Self->IsNot(
+    scalar @{$ArrayList},
+    0,
+    "KPIList() Array | Number of elements is not 0",
+);
+
+for my $ID (@AddedKPIs) {
+    my $Result = grep $ID, @{$ArrayList};
+    $Self->True(
+        $Result,
+        "KPIList() Array | contains KPI ID: '$ID'",
+    );
+}
+
+my $HashList = $KPIObject->KPIList(
+    Valid      => 0,
+    ResultType => 'HASH',
+);
+
+$Self->True(
+    IsHashRefWithData($HashList),
+    "KPIList() Hash | Has Data with true"
+);
+$Self->IsNot(
+    scalar keys %{$HashList},
+    0,
+    "KPIList() Hash | Number of elements is not 0",
+);
+
+for my $ID (@AddedKPIs) {
+    $Self->True(
+        $HashList->{$ID},
+        "KPIList() Hash | contains KPI ID: '$ID' and has name: '$HashList->{$ID}' ",
+    );
 }
 
 # System Cleanup

@@ -550,6 +550,118 @@ sub KPIUpdate {
     return 1;
 }
 
+
+=item KPIList()
+
+get KPI list
+
+    my $List = $KPIObject->KPIList();
+
+    or
+
+    my $List = $DynamicFieldObject->DynamicFieldList(
+        Valid => 0,             # optional, defaults to 1
+
+        ResultType => 'HASH',   # optional, 'ARRAY' or 'HASH', defaults to 'ARRAY'
+    );
+
+Returns:
+
+    $List = {
+        1 => 'ItemOne',
+        2 => 'ItemTwo',
+        3 => 'ItemThree',
+        4 => 'ItemFour',
+    };
+
+    or
+
+    $List = (
+        1,
+        2,
+        3,
+        4
+    );
+
+=cut
+
+sub KPIList {
+    my ( $Self, %Param ) = @_;
+
+    # check cache
+    my $Valid = 1;
+    if ( defined $Param{Valid} && $Param{Valid} eq '0' ) {
+        $Valid = 0;
+    }
+
+    my $ResultType = $Param{ResultType} || 'ARRAY';
+    $ResultType = $ResultType eq 'HASH' ? 'HASH' : 'ARRAY';
+
+    # set cache key
+    my $CacheKey
+        = 'KPIList::Valid::'
+        . $Valid
+        . '::ResultType::'
+        . $ResultType;
+    my $Cache = $Self->{CacheObject}->Get(
+        Type => 'CRKPI',
+        Key  => $CacheKey,
+    );
+
+    return $Cache if $Cache;
+
+    my $SQL = '
+        SELECT id, name
+        FROM cr_kpi';
+
+    if ($Valid) {
+        $SQL .= ' WHERE valid_id IN (' . join ', ', $Self->{ValidObject}->ValidIDsGet() . ')';
+
+    }
+
+    $SQL .= ' ORDER BY id';
+
+    return if !$Self->{DBObject}->Prepare( SQL => $SQL );
+
+    if ( $ResultType eq 'HASH' ) {
+        my %Data;
+
+        while ( my @Row = $Self->{DBObject}->FetchrowArray() ) {
+            $Data{ $Row[0] } = $Row[1];
+        }
+
+        # set cache
+        $Self->{CacheObject}->Set(
+            Type  => 'DynamicField',
+            Key   => $CacheKey,
+            Value => \%Data,
+            TTL   => $Self->{CacheTTL},
+        );
+
+        # return hash
+        return \%Data;
+    }
+    else {
+        my @Data;
+        while ( my @Row = $Self->{DBObject}->FetchrowArray() ) {
+            push @Data, $Row[0];
+        }
+
+        # set cache
+        $Self->{CacheObject}->Set(
+            Type  => 'DynamicField',
+            Key   => $CacheKey,
+            Value => \@Data,
+            TTL   => $Self->{CacheTTL},
+        );
+
+        # return array
+        return \@Data;
+    }
+
+    return;
+}
+
 1;
 
 =back
