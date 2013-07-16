@@ -650,11 +650,7 @@ my %KPIUpdatedData = (
 );
 
 for my $Test (@Tests) {
-use Data::Dumper;
-print STDERR Dumper($Test->{Config}); #TODO Delete Developers Oputput
-
     my $Success = $KPIObject->KPIUpdate( %{ $Test->{Config} } );
-
 
     if ( $Test->{Success} ) {
         $Self->True(
