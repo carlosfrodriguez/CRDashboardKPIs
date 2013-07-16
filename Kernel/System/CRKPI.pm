@@ -2,7 +2,8 @@
 # Kernel/System/CRKPI.pm - CR KPIs backend
 # Copyright (C) 2003-2013 Carlos Rodríguez
 # --
-# Based in OTRS file Kernel/System/GenericInterface/Webservice.pm
+# Based in OTRS file Kernel/System/DynamicField.pm
+# Copyright (C) 2001-2013 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
