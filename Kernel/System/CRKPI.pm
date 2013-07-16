@@ -514,11 +514,12 @@ sub KPIUpdate {
     return if !$Self->{DBObject}->Do(
         SQL => '
             UPDATE cr_kpi
-            SET  name = ?, comments = ?, object_type = ?, config = ?, valid_id = ?,
-                change_time = current_timestamp, change_by = ?',
+            SET name = ?, comments = ?, object_type = ?, config = ?, valid_id = ?,
+                change_time = current_timestamp, change_by = ?
+            WHERE id = ?',
         Bind => [
             \$Param{Name},  \$Param{Comments}, \$Param{ObjectType}, \$Config, \$Param{ValidID},
-            \$Param{UserID},
+            \$Param{UserID}, \$Param{ID},
         ],
     );
 
