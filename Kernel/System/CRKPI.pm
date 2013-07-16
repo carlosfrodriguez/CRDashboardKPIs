@@ -185,7 +185,7 @@ sub KPIAdd {
                 change_time, change_by)
             VALUES (?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)',
         Bind => [
-            \$Param{Name},  \$Param{Comments}, \$Param{Object_Type}, \$Config,
+            \$Param{Name},  \$Param{Comments}, \$Param{ObjectType}, \$Config,
             \$Param{ValidID}, \$Param{UserID}, \$Param{UserID},
         ],
     );
@@ -432,7 +432,8 @@ sub KPIGet {
 
 update KPI details
 
-    my $Success = $KPIObject->KPIAdd(
+    my $Success = $KPIObject->KPIUpdate(
+        ID            => 123,
         Name          => 'New KPI',
         Comments      => 'A description of the new KPI',
         ObjectType    => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
@@ -451,7 +452,7 @@ sub KPIUpdate {
     my ( $Self, %Param ) = @_;
 
     # check needed parameters
-    for my $Needed (qw(Name Config ObjectType ValidID GroupIDs UserID)) {
+    for my $Needed (qw(ID Name Config ObjectType ValidID GroupIDs UserID)) {
         if ( !$Param{$Needed} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
