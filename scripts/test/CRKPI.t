@@ -95,7 +95,7 @@ my @Tests = (
         Success => 0,
     },
     {
-        Name    => 'Missing ValidID',
+        Name    => 'Missing UserID',
         Config  => {
             Name          => 'New KPI',
             Comments      => 'A description of the new KPI',
@@ -378,7 +378,6 @@ $Self->IsNot(
     'KPIADD() for KPIGet() tests | should not be undef',
 );
 
-
 # Add the ID
 $KPIToGet{ID} = $KPIIDToGet;
 push @AddedKPIs, $KPIIDToGet;
@@ -487,6 +486,220 @@ for my $Test (@Tests) {
             "$Test->{Name} KPIGet() | should be undef",
         );
     }
+}
+
+# KPIUpdate() tests
+
+# create a new KPI to Update
+my %KPIToUpdate = (
+    Name          => 'KPI to Update',
+    Comments      => 'A description of the new KPI',
+    ObjectType    => 'Generic',
+    Config        => {
+        Test => 1
+    },
+    ValidID       => 1,
+    GroupIDs      => [ 1, 2, 3],
+    UserID        => $UserID,
+);
+
+my $KPIIDToUpdate = $KPIObject->KPIAdd(%KPIToUpdate);
+
+print "Sleeping for 1 Secs...\n";
+sleep 1;
+
+# sanity test
+$Self->IsNot(
+    $KPIIDToUpdate,
+    undef,
+    'KPIADD() for KPIUpdate() tests | should not be undef',
+);
+
+push @AddedKPIs, $KPIIDToUpdate;
+
+my $KPIOriginalData = $KPIObject->KPIGet(
+    ID => $KPIIDToUpdate,
+);
+
+my %KPIUpdatedData = (
+    ID            => $KPIIDToUpdate,
+    Name          => 'Updated KPI ÁÉáéóäëñßカスタマПфия',
+    Comments      => 'A description of the updated KPI ÁÉáéóäëñßカスタマПфия',
+    ObjectType    => 'Generic',
+    Config        => {
+        Test => 'ÁÉáéóäëñßカスタマПфия',
+    },
+    ValidID       => 1,
+    GroupIDs      => [1,2,3],
+    UserID        => $UserID,
+);
+
+@Tests = (
+    {
+        Name    => 'Empty Params',
+        Config  => {},
+        Success => 0,
+    },
+    {
+        Name    => 'Missing ID',
+        Config  => {
+            %KPIUpdatedData,
+            ID => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing Name',
+        Config  => {
+            %KPIUpdatedData,
+            Name   => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing Object',
+        Config  => {
+            %KPIUpdatedData,
+            ObjectType => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing Config',
+        Config  => {
+            %KPIUpdatedData,
+            Config => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing ValidID',
+        Config  => {
+            %KPIUpdatedData,
+            ValidID => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing GroupIDs',
+        Config  => {
+            %KPIUpdatedData,
+            GroupIDs => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Missing UserID',
+        Config  => {
+            %KPIUpdatedData,
+            UserID => undef,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Wrong Config Format',
+        Config  => {
+            %KPIUpdatedData,
+            Config => 'Test',
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Empty Config',
+        Config  => {
+            %KPIUpdatedData,
+            Config => {},
+            UserID => $UserID,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Wrong GroupIDs Format',
+        Config  => {
+            %KPIUpdatedData,
+            GroupIDs => 1,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Empty GroupIDs',
+        Config  => {
+            %KPIUpdatedData,
+            GroupIDs => [ ],
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Duplicated name',
+        Config  => {
+            %KPIUpdatedData,
+            Name   => 'New KPI',
+            UserID => $UserID,
+        },
+        Success => 0,
+    },
+    {
+        Name    => 'Correct KPI',
+        Config  => {
+            %KPIUpdatedData,
+        },
+        OriginalData => $KPIOriginalData,
+        ExpectedData => \%KPIUpdatedData,
+        Success => 1,
+    },
+);
+
+for my $Test (@Tests) {
+use Data::Dumper;
+print STDERR Dumper($Test->{Config}); #TODO Delete Developers Oputput
+
+    my $Success = $KPIObject->KPIUpdate( %{ $Test->{Config} } );
+
+
+    if ( $Test->{Success} ) {
+        $Self->True(
+            $Success,
+            "$Test->{Name} KPIUpdate() | With True",
+        );
+
+        # get the updated KPI
+        my $KPI = $KPIObject->KPIGet(
+            ID => $KPIIDToUpdate,
+        );
+
+        $Self->IsNot(
+            $KPI->{ChangeTime},
+            $Test->{OriginalData}->{ChangeTime},
+            "$Test->{Name} KPIUpdate() | ChangeTime is different than the orinal",
+        );
+
+        $Self->Is(
+            $KPI->{CreateTime},
+            $Test->{OriginalData}->{CreateTime},
+            "$Test->{Name} KPIUpdate() | CreateTime is equals than the orinal",
+        );
+
+        # remove the attributes for easy compare
+        delete $KPI->{CreateTime};
+        delete $KPI->{CreateBy};
+        delete $KPI->{ChangeTime};
+        delete $KPI->{ChangeBy};
+
+        $KPI->{UserID} = $UserID;
+
+        $Self->IsDeeply(
+            $KPI,
+            $Test->{ExpectedData},
+            "$Test->{Name} KPIUpdate() |",
+        );
+    }
+    else {
+        $Self->False(
+            $Success,
+            "$Test->{Name} KPIUpdate() | With False",
+        );
+    }
+
 }
 
 # System Cleanup
