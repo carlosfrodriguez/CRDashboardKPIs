@@ -92,7 +92,7 @@ sub new {
 
     # get the cache TTL (in seconds)
     # TODO set config setting
-    $Self->{CacheTTL} = int( $Self->{ConfigObject}->Get('CRKPIs::CacheTTL') || 3600 );
+    $Self->{CacheTTL} = int( $Self->{ConfigObject}->Get('CRDashboardKPIs::CacheTTL') || 3600 );
 
     # set lower if database is case sensitive
     $Self->{Lower} = '';
