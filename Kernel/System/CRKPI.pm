@@ -114,6 +114,8 @@ add a new KPI
         Config        => $ConfigHashRef,
         ValidID       => 1,
         GroupIDs      => [ 1, 2, 3],
+        Min           => 0,
+        Max           => 100,
         UserID        => 123,
     );
 =cut
@@ -124,6 +126,17 @@ sub KPIAdd {
     # check needed parameters
     for my $Needed (qw(Name Config ObjectType ValidID GroupIDs UserID)) {
         if ( !$Param{$Needed} ) {
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "Need $Needed!"
+            );
+            return;
+        }
+    }
+
+    # check possible 0 parameters
+    for my $Needed (qw(Min Max)) {
+        if ( !defined $Param{$Needed} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
                 Message  => "Need $Needed!"
@@ -148,6 +161,17 @@ sub KPIAdd {
             Message  => "KPI Config should be a non empty hash reference!",
         );
         return;
+    }
+
+    # check min and max
+    for my $Value qw(Min Max) {
+        if ( !IsInteger( $Param{$Value} ) ){
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "KPI $Value value should be an integer!",
+            );
+            return;
+        }
     }
 
     # check if Name already exists
@@ -182,12 +206,12 @@ sub KPIAdd {
     # create the kpi entry in the DB
     return if !$Self->{DBObject}->Do(
         SQL => '
-            INSERT INTO cr_kpi (name, comments, object_type, config, valid_id, create_time, create_by,
-                change_time, change_by)
-            VALUES (?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)',
+            INSERT INTO cr_kpi (name, comments, object_type, config, valid_id, min, max,
+                create_time, create_by, change_time, change_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)',
         Bind => [
             \$Param{Name},  \$Param{Comments}, \$Param{ObjectType}, \$Config,
-            \$Param{ValidID}, \$Param{UserID}, \$Param{UserID},
+            \$Param{ValidID}, \$Param{Min}, \$Param{Max}, \$Param{UserID}, \$Param{UserID},
         ],
     );
 
@@ -302,6 +326,8 @@ Returns:
         ObjectType          => 'Generic'                             # Ticket, or FAQ or ITSMCI or ITSMChange, etc.
         Config              => $ConfigHashRef,
         GroupIDs            => [1, 2, 3],
+        Min                 => 0,
+        Max                 => 100,
         ValidID             => '1',
         CreateTime          => '2011-12-01 08:01:23',
         CreateBy            => '12',
@@ -351,8 +377,8 @@ sub KPIGet {
     if ( $Param{ID} ) {
         return if !$Self->{DBObject}->Prepare(
             SQL =>'
-                SELECT id, name, comments, object_type, config, valid_id, create_time, create_by,
-                    change_time, change_by
+                SELECT id, name, comments, object_type, config, valid_id, min, max, create_time,
+                    create_by, change_time, change_by
                 FROM cr_kpi
                 WHERE id = ?',
             Bind => [ \$Param{ID} ],
@@ -361,8 +387,8 @@ sub KPIGet {
     else {
         return if !$Self->{DBObject}->Prepare(
             SQL =>'
-                SELECT id, name, comments, object_type, config, valid_id, create_time, create_by,
-                    change_time, change_by
+                SELECT id, name, comments, object_type, config, valid_id, min, max, create_time,
+                    create_by, change_time, change_by
                 FROM cr_kpi
                 WHERE name = ?',
             Bind => [ \$Param{Name} ],
@@ -380,10 +406,12 @@ sub KPIGet {
         $KPI{ObjectType} = $Row[3];
         $KPI{Config}     = $Config;
         $KPI{ValidID}    = $Row[5];
-        $KPI{CreateTime} = $Row[6];
-        $KPI{CreateBy}   = $Row[7];
-        $KPI{ChangeTime} = $Row[8];
-        $KPI{ChangeBy}   = $Row[9];
+        $KPI{Min}        = $Row[6];
+        $KPI{Max}        = $Row[7];
+        $KPI{CreateTime} = $Row[8];
+        $KPI{CreateBy}   = $Row[9];
+        $KPI{ChangeTime} = $Row[10];
+        $KPI{ChangeBy}   = $Row[11];
     }
 
     if ( !$KPI{ID} ) {
@@ -441,6 +469,8 @@ update KPI details
         Config        => $ConfigHashRef,
         ValidID       => 1,
         GroupIDs      => [ 1, 2, 3],
+        Min           => 0,
+        Max           => 100,
         UserID        => 123,
     );
 
@@ -453,8 +483,19 @@ sub KPIUpdate {
     my ( $Self, %Param ) = @_;
 
     # check needed parameters
-    for my $Needed (qw(ID Name Config ObjectType ValidID GroupIDs UserID)) {
+    for my $Needed (qw(ID Name Config ObjectType ValidID GroupIDs Min Max UserID)) {
         if ( !$Param{$Needed} ) {
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "Need $Needed!"
+            );
+            return;
+        }
+    }
+
+    # check possible 0 parameters
+    for my $Needed (qw(Min Max)) {
+        if ( !defined $Param{$Needed} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
                 Message  => "Need $Needed!"
@@ -479,6 +520,17 @@ sub KPIUpdate {
             Message  => "KPI Config should be a non empty hash reference!",
         );
         return;
+    }
+
+    # check min and max
+    for my $Value qw(Min Max) {
+        if ( !IsInteger( $Param{$Value} ) ){
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "KPI $Value value should be an integer!",
+            );
+            return;
+        }
     }
 
     # check if Name already exists
@@ -515,12 +567,12 @@ sub KPIUpdate {
     return if !$Self->{DBObject}->Do(
         SQL => '
             UPDATE cr_kpi
-            SET name = ?, comments = ?, object_type = ?, config = ?, valid_id = ?,
+            SET name = ?, comments = ?, object_type = ?, config = ?, valid_id = ?, min=?, max=?,
                 change_time = current_timestamp, change_by = ?
             WHERE id = ?',
         Bind => [
             \$Param{Name},  \$Param{Comments}, \$Param{ObjectType}, \$Config, \$Param{ValidID},
-            \$Param{UserID}, \$Param{ID},
+            \$Param{Min}, \$Param{Max}, \$Param{UserID}, \$Param{ID},
         ],
     );
 
@@ -549,7 +601,6 @@ sub KPIUpdate {
 
     return 1;
 }
-
 
 =item KPIList()
 
