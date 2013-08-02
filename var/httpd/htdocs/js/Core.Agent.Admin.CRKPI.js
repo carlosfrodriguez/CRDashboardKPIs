@@ -49,7 +49,7 @@ Core.Agent.Admin.KPI = (function (TargetNS) {
         Action = KPIsConfig[ ObjectType ];
 
         // redirect to correct url
-        URL = Core.Config.Get('Baselink') + 'Action=' + Action + ';Subaction=Add';
+        URL = Core.Config.Get('Baselink') + 'Action=' + Action + ';Subaction=Add' + ';ObjectType=' + ObjectType;
         URL += SerializeData(Core.App.GetSessionInformation());
         window.location = URL;
     };
