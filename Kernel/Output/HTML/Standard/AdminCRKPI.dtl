@@ -64,7 +64,7 @@ $('#ObjectType').bind('change', function() {
             <div class="Content">
                 <div class="FieldExplanation">
                     <p>
-                        $Text{"To add a new KPI, select the object type from the above list, Generic type lets you to use your own SQL statement, while the rest uses Object Search() build in functions."}
+                        $Text{"To add a new KPI, select the object type from the above list, Generic type let you to use your own SQL statement, while the rest uses Object Search() build-in functions (as "TicketSearch()" )."}
                     </p>
                 </div>
             </div>
@@ -160,7 +160,7 @@ $('#ShowContextSettingsDialog').bind('click', function (Event) {
                             <td class="Center">
 <!-- dtl:block:DeleteLink -->
                                 <div>
-                                    <a class="TrashCan KPIDelete" href="#" data-query-string="Action=AdminKPI;Subaction=KPIDelete;ID=$LQData{"ID"};$QEnv{"ChallengeTokenParam"}" title="$Text{"Delete this KPI"}">$Text{"Delete this KPI"}</a>
+                                    <a class="TrashCan KPIDelete" href="#" data-query-string="Action=AdminCRKPI;Subaction=KPIDelete;ID=$LQData{"ID"};$QEnv{"ChallengeTokenParam"}" title="$Text{"Delete this KPI"}">$Text{"Delete this KPI"}</a>
                                 </div>
 <!-- dtl:block:DeleteLink -->
                             </td>
@@ -193,7 +193,7 @@ $('.KPIDelete').bind('click', function (Event) {
 
         Core.UI.Dialog.ShowDialog({
             Title: '$JSText{"Delete KPI"}',
-            HTML: 'Deleting the KPI',
+            HTML: '$JSText{"Deleting the Key Performance Indicator"}',
             Modal: true,
             CloseOnClickOutside: false,
             CloseOnEscape: false,
