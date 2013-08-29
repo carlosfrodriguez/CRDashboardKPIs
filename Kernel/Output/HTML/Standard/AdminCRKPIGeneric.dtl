@@ -1,0 +1,224 @@
+# --
+# AdminCRKPIGeneric.dtl - provides HTML form for AdminCRKPIGeneric
+# Copyright (C) 2001-2013 Carlos Rodríguez
+# --
+# Based in OTRS file AdminDynamicFieldText.dtl
+# Copyright (C) 2001-2013 OTRS AG, http://otrs.com/
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>$Text{"KPIs"} - $Text{"$Data{"ObjectTypeName"}"}: $Text{"$Data{"Mode"}"} $Text{"$Data{"DisplayKPIName"}"}</h1>
+
+    <div class="Clear"></div>
+
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>$Text{"Actions"}</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+                    <li>
+                        <a href="$Env{"Baselink"}Action=AdminCRKPI" class="CallForAction"><span>$Text{"Go back to overview"}</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>$Text{"Preview"}</h2>
+            </div>
+            <div class="Content">
+                <div id="gauge"></div>
+            </div>
+        </div>
+
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>Hint</h2>
+            </div>
+            <div class="Content">
+                <div class="FieldExplanation">
+                    <p>$Text{"A SQL example for a KPI to show how many tickets are in state open:"}</p><br/>
+                    <p>SELECT COUNT (DISTINCT t.id)</p>
+                    <p>FROM ticket t</p>
+                    <p>WHERE t.ticket_state_id = 4</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ContentColumn">
+        <form action="$Env{"CGIHandle"}" method="post" class="Validate PreventMultipleSubmits">
+            <input type="hidden" name="Action" value="AdminCRKPIGeneric">
+            <input type="hidden" name="Subaction" value="$QData{"Mode"}Action">
+            <input type="hidden" name="ObjectType" value="$QData{"ObjectType"}">
+            <input type="hidden" name="ID" value="$QData{"ID"}">
+
+            <div class="WidgetSimple">
+                <div class="Header">
+                    <h2>$Text{"General"}</h2>
+                </div>
+                <div class="Content">
+                    <div class="LayoutGrid ColumnsWithSpacing">
+                        <div class="Size1of2">
+                            <fieldset class="TableLike">
+                                <label class="Mandatory" for="Name"><span class="Marker">*</span> $Text{"Name"}:</label>
+                                <div class="Field">
+                                    <input id="Name" class="W50pc Validate_Required $QData{"NameServerError"}" type="text" maxlength="200" value="$QData{"Name"}" name="Name" $QData{"ReadonlyInternalField"}>
+                                    <div id="NameError" class="TooltipErrorMessage"><p>$Text{"This field is required."}</p></div>
+                                    <div id="NameServerError" class="TooltipErrorMessage"><p>$Text{"$Data{"NameServerErrorMessage"}"}</p></div>
+                                    <p class="FieldExplanation">$Text{"Must be unique."}</p>
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label for="Comments">$Text{"Comments"}:</label>
+                                <div class="Field">
+                                    <input id="Label" class="W50pc" type="text" maxlength="200" value="$QData{"Comments"}" name="Comments"/>
+                                    <p class="FieldExplanation">$Text{"A text to describe this KPI."}</p>
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label class="Mandatory" for="Min"><span class="Marker">*</span>$Text{"Minimum value"}:</label>
+                                <div class="Field">
+                                    <input id="Min" class="W50pc Validate_Number $QData{"MinServerError"}" type="text" maxlength="200" value="$QData{"Min"}" name="Min"/>
+                                    <div id="MinError" class="TooltipErrorMessage"><p>$Text{"This field must be a positive integer."}</p></div>
+                                    <div id="MinServerError" class="TooltipErrorMessage"><p>$Text{"$Data{"MinServerErrorMessage"}"}</p></div>
+                                    <p class="FieldExplanation">$Text{"This field is used for the KPI minimum value threshold."}</p>
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label class="Mandatory" for="Max"><span class="Marker">*</span>$Text{"Maximum value"}:</label>
+                                <div class="Field">
+                                    <input id="Max" class="W50pc Validate_Number $QData{"MaxServerError"}" type="text" maxlength="200" value="$QData{"Max"}" name="Max"/>
+                                    <div id="MaxError" class="TooltipErrorMessage"><p>$Text{"This field must be a positive integer."}</p></div>
+                                    <div id="MaxServerError" class="TooltipErrorMessage"><p>$Text{"$Data{"MaxServerErrorMessage"}"}</p></div>
+                                    <p class="FieldExplanation">$Text{"This field is used for the KPI maximum value threshold."}</p>
+                                </div>
+                                <div class="Clear"></div>
+                            </fieldset>
+                        </div>
+                        <div class="Size1of2">
+                            <fieldset class="TableLike">
+                                <label class="Mandatory" for="GroupIDs"><span class="Marker">*</span>$Text{"Groups"}:</label>
+                                <div class="Field">
+                                    $Data{"GroupStrg"}
+                                    <div id="GroupIDsError" class="TooltipErrorMessage"><p>$Text{"This field is required."}</p></div>
+                                    <div id="GroupIDsServerError" class="TooltipErrorMessage"><p>$Text{"$Data{"GroupIDsServerErrorMessage"}"}</p></div>
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label for="ValidID">$Text{"Validity"}:</label>
+                                <div class="Field">
+                                    $Data{"ValidityStrg"}
+                                </div>
+                                <div class="Clear"></div>
+
+                                <div class="SpacingTop"></div>
+                                <label for="ObjectType">$Text{"Object type"}:</label>
+                                <div class="Field">
+                                    <input id="ObjectTypeMame" readonly class="W50pc" type="text" maxlength="200" value="$Text{"$Data{"ObjectTypeName"}"}" name="ObjectTypeName"/>
+                                    <div class="Clear"></div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="WidgetSimple">
+                <div class="Header">
+                    <h2>$Text{"$Data{"FieldTypeName"}"} $Text{"KPI Settings"}</h2>
+                </div>
+                <div class="Content">
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="SQLStatement"><span class="Marker">*</span>$Text{"SQL Statement"}:</label>
+                        <div class="Field">
+                            <textarea id="SQLStatement" class="W50pc Validate_Required $QData{"SQLStatementServerError"}" rows="10" cols="60" name="SQLStatement">$QData{"SQLStatement"}</textarea>
+                            <div id="SQLStatementError" class="TooltipErrorMessage"><p>$Text{"This field is required."}</p></div>
+                            <div id="SQLStatementServerError" class="TooltipErrorMessage"><p>$Text{"$Data{"SQLStatementServerErrorMessage"}"}</p></div>
+                            <p class="FieldExplanation">$Text{"The SQL Statement must return a single value."}</p>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field">
+                            <button id="KPITest" type="button" class="Primary" value="$Text{"Test"}">$Text{"Test"}</button>
+                        </div>
+<!-- dtl:js_on_document_complete -->
+<script type="text/javascript">//<![CDATA[
+$('#KPITest').bind('click', function() {
+    var Gage,
+    Min,
+    Max,
+    Data = {
+        Action: 'AdminCRKPIGeneric',
+        Subaction: 'Test',
+        SQLStatement: $('#SQLStatement').val() || '',
+   },
+   CommunicationErrorMsg = '$JSText{"Communication Error"}';
+
+    Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), Data, function (Response) {
+
+        if (!Response) {
+            alert(CommunicationErrorMsg);
+            return;
+        }
+        if (!Response.Success){
+            alert(Response.Error)
+            return;
+        }
+
+        Min = $('#Min').val();
+        if( !Math.floor(Min) || !Min || !$.isNumeric(Min)) {
+            Min = 0;
+        }
+
+        Max = $('#Max').val();
+        if( !Math.floor(Max) || !Max || !$.isNumeric(Max)) {
+            Max = 100;
+        }
+
+        $('#gauge').empty();
+        Gage = new JustGage({
+          id: "gauge",
+          value: parseInt(Response.Value,10),
+          min: Min,
+          max: Max,
+          title: $('#Name').val() || 'No KPI Name'
+        });
+    }, 'json');
+});
+//]]></script>
+<!-- dtl:js_on_document_complete -->
+                    </fieldset>
+                </div>
+            </div>
+            <fieldset class="TableLike">
+                <div class="Field SpacingTop">
+                    <button type="submit" class="Primary" value="$Text{"Save"}">$Text{"Save"}</button>
+                    $Text{"or"}
+                    <a href="$Env{"Baselink"}Action=AdminCRKPI">$Text{"Cancel"}</a>
+                </div>
+                <div class="Clear"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- dtl:js_on_document_complete -->
+<script type="text/javascript">//<![CDATA[
+    var Gage = new JustGage({
+      id: "gauge",
+      value: 0,
+      min: 0,
+      max: 100,
+      title: "New"
+    });
+//]]></script>
+<!-- dtl:js_on_document_complete -->
