@@ -1,0 +1,63 @@
+# --
+# AgentDashboardKPI.dtl - provides HTML for CR KPIs
+# Copyright (C) 2001-2013 Carlos Rodríguez
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<!-- dtl:block:KPI -->
+<div id="$Data{"ElementID"}" class="KPI"></div>
+<!-- dtl:js_on_document_complete -->
+<script type="text/javascript">//<![CDATA[
+var Data = {
+        Value: "$Data{"Value"}",
+        Min: $Data{"Min"},
+        Max: $Data{"Max"},
+        Name: "$Data{"Name"}"
+};
+
+Core.Agent.DashboardKPI.RegisterKPI("$Data{"ElementID"}", Data);
+
+//]]></script>
+<!-- dtl:js_on_document_complete -->
+<!-- dtl:block:KPI -->
+
+<style>
+.KPI {
+    width:200px;
+    height:120px;
+    float: left;
+}
+</style>
+
+<!-- dtl:js_on_document_complete -->
+<script type="text/javascript">//<![CDATA[
+/*var Gages;
+
+$('#gauge').empty();
+var g1 = new JustGage({
+  id: "gauge1",
+  value: 67,
+  min: 0,
+  max: 100,
+  title: "Test"
+});
+ var g2 = new JustGage({
+  id: "gauge2",
+  value: 67,
+  min: 0,
+  max: 100,
+  title: "Test"
+});
+var g3 = new JustGage({
+  id: "gauge3",
+  value: 67,
+  min: 0,
+  max: 100,
+  title: "Test"
+});
+*/
+//]]></script>
+<!-- dtl:js_on_document_complete -->
