@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<otrs_package version="1.0">
+    <Name>CRDashboardKPIs</Name>
+    <Version>0.0.0</Version>
+    <Framework>3.2.x</Framework>
+    <Vendor>Carlos Rodriguez</Vendor>
+    <URL>http://https://github.com/carlosfrodriguez</URL>
+    <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
+    <Description Lang="en">The CR Dashboard KPIs Package.</Description>
+    <Filelist>
+    </Filelist>
+    <DatabaseInstall Type="post">
+        <TableCreate Name="cr_kpi">
+            <Column Name="id" Required="true" PrimaryKey="true" AutoIncrement="true" Type="INTEGER"/>
+            <Column Name="name" Required="true" Size="250" Type="VARCHAR"/>
+            <Column Name="comments" Required="false" Size="250" Type="VARCHAR"/>
+            <Column Name="object_type" Required="false" Size="250" Type="VARCHAR"/>
+            <Column Name="config" Required="false" Type="LONGBLOB"/>
+            <Column Name="min" Required="true" Type="INTEGER"/>
+            <Column Name="max" Required="true" Type="INTEGER"/>
+            <Column Name="valid_id" Required="true" Type="SMALLINT"/>
+            <Column Name="create_time" Required="true" Type="DATE"/>
+            <Column Name="create_by" Required="true" Type="INTEGER"/>
+            <Column Name="change_time" Required="true" Type="DATE"/>
+            <Column Name="change_by" Required="true" Type="INTEGER"/>
+            <Unique Name="cr_kpi_name">
+                <UniqueColumn Name="name"/>
+            </Unique>
+            <Index Name="cr_kpi_valid_id">
+                <IndexColumn Name="valid_id"/>
+            </Index>
+            <ForeignKey ForeignTable="valid">
+                <Reference Local="valid_id" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="users">
+                <Reference Local="create_by" Foreign="id"/>
+                <Reference Local="change_by" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+        <TableCreate Name="cr_kpi_group">
+            <Column Name="group_id" Required="true" Type="INTEGER"/>
+            <Column Name="kpi_id" Required="true" Type="INTEGER"/>
+            <Index Name="cr_kpi_group_id">
+                <IndexColumn Name="kpi_id"/>
+            </Index>
+            <ForeignKey ForeignTable="cr_kpi">
+                <Reference Local="kpi_id" Foreign="id"/>
+            </ForeignKey>
+            <ForeignKey ForeignTable="groups">
+                <Reference Local="group_id" Foreign="id"/>
+            </ForeignKey>
+        </TableCreate>
+    </DatabaseInstall>
+    <CodeInstall Type="post"><![CDATA[
+
+        # define function name
+        my $FunctionName = 'CodeInstall';
+
+        # create the package name
+        my $CodeModule = 'var::packagesetup::' . $Param{Structure}->{Name}->{Content};
+
+        # load the module
+        if ( $Self->{MainObject}->Require($CodeModule) ) {
+
+            # create new instance
+            my $CodeObject = $CodeModule->new( %{$Self} );
+
+            if ($CodeObject) {
+
+                # start method
+                if ( !$CodeObject->$FunctionName(%{$Self}) ) {
+                    $Self->{LogObject}->Log(
+                        Priority => 'error',
+                        Message  => "Could not call method $FunctionName() on $CodeModule.pm."
+                    );
+                }
+            }
+
+            # error handling
+            else {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "Could not call method new() on $CodeModule.pm."
+                );
+            }
+        }
+
+    ]]></CodeInstall>
+    <CodeReinstall Type="post"><![CDATA[
+
+        # define function name
+        my $FunctionName = 'CodeReinstall';
+
+        # create the package name
+        my $CodeModule = 'var::packagesetup::' . $Param{Structure}->{Name}->{Content};
+
+        # load the module
+        if ( $Self->{MainObject}->Require($CodeModule) ) {
+
+            # create new instance
+            my $CodeObject = $CodeModule->new( %{$Self} );
+
+            if ($CodeObject) {
+
+                # start method
+                if ( !$CodeObject->$FunctionName(%{$Self}) ) {
+                    $Self->{LogObject}->Log(
+                        Priority => 'error',
+                        Message  => "Could not call method $FunctionName() on $CodeModule.pm."
+                    );
+                }
+            }
+
+            # error handling
+            else {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "Could not call method new() on $CodeModule.pm."
+                );
+            }
+        }
+
+    ]]></CodeReinstall>
+    <CodeUpgrade Type="post"><![CDATA[
+
+        # define function name
+        my $FunctionName = 'CodeUpgrade';
+
+        # create the package name
+        my $CodeModule = 'var::packagesetup::' . $Param{Structure}->{Name}->{Content};
+
+        # The code module has just recently been copied to it's location in the file system.
+        # In a persistent Perl environment an old version of the module might still be loaded,
+        # as watchdogs like Apache2::Reload haven't had a chance to reload it.
+        # So we need to make sure that the new version is being loaded.
+        # Kernel::System::Main::Require() checks the relative file path, so we need to remove that from %INC.
+        # This is only needed in persistent Perl environment, but does no harm in a CGI environment.
+        my $CodeModulePath = $CodeModule;
+        $CodeModulePath =~ s/::/\//g;
+        $CodeModulePath .= '.pm';
+        delete $INC{$CodeModulePath};
+
+        # load the module
+        if ( $Self->{MainObject}->Require($CodeModule) ) {
+
+            # create new instance
+            my $CodeObject = $CodeModule->new( %{$Self} );
+
+            if ($CodeObject) {
+
+                # start method
+                if ( !$CodeObject->$FunctionName(%{$Self}) ) {
+                    $Self->{LogObject}->Log(
+                        Priority => 'error',
+                        Message  => "Could not call method $FunctionName() on $CodeModule.pm."
+                    );
+                }
+            }
+
+            # error handling
+            else {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "Could not call method new() on $CodeModule.pm."
+                );
+            }
+        }
+
+    ]]></CodeUpgrade>
+    <CodeUpgrade Type="post" Version="1.0.25"><![CDATA[
+
+        # define function name
+        my $FunctionName = 'CodeUpgradeFromLowerThan_1_0_25';
+
+        # create the package name
+        my $CodeModule = 'var::packagesetup::' . $Param{Structure}->{Name}->{Content};
+
+        # load the module
+        if ( $Self->{MainObject}->Require($CodeModule) ) {
+
+            # create new instance
+            my $CodeObject = $CodeModule->new( %{$Self} );
+
+            if ($CodeObject) {
+
+                # start methode
+                if ( !$CodeObject->$FunctionName(%{$Self}) ) {
+                    $Self->{LogObject}->Log(
+                        Priority => 'error',
+                        Message  => "Could not call method $FunctionName() on $CodeModule.pm."
+                    );
+                }
+            }
+
+            # error handling
+            else {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "Could not call method new() on $CodeModule.pm."
+                );
+            }
+        }
+
+    ]]></CodeUpgrade>
+    <CodeUninstall Type="pre"><![CDATA[
+
+        # define function name
+        my $FunctionName = 'CodeUninstall';
+
+        # create the package name
+        my $CodeModule = 'var::packagesetup::' . $Param{Structure}->{Name}->{Content};
+
+        # load the module
+        if ( $Self->{MainObject}->Require($CodeModule) ) {
+
+            # create new instance
+            my $CodeObject = $CodeModule->new( %{$Self} );
+
+            if ($CodeObject) {
+
+                # start methode
+                if ( !$CodeObject->$FunctionName(%{$Self}) ) {
+                    $Self->{LogObject}->Log(
+                        Priority => 'error',
+                        Message  => "Could not call method $FunctionName() on $CodeModule.pm.",
+                    );
+                }
+            }
+
+            # error handling
+            else {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "Could not call method new() on $CodeModule.pm.",
+                );
+            }
+        }
+
+    ]]></CodeUninstall>
+    <IntroInstall Type="pre" Title="Install Information" Lang="en"><![CDATA[
+        <br/>
+        <strong>WELCOME</strong>
+        <br/>
+        <br/>
+        You are about to install the package CRDahsboardKPIs.<br/>
+        <br/>
+        <br/>
+        <strong>ATTENTION</strong>
+        <br/>
+        <br/>
+        Make sure your database accepts packages over 5 MB in size. A MySQL database for example accepts packages up to 1 MB by default. In this case, the value for max_allowed_packet must be increased. The recommended maximum size accepted is 20 MB.<br/>
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroInstall>
+    <IntroInstall Type="pre" Title="Installation Information" Lang="de"><![CDATA[
+        <br/>
+        <strong>WILLKOMMEN</strong>
+        <br/>
+        <br/>
+        Sie sind im Begriff das Paket CRDahsboardKPIs zu installieren.<br/>
+        <br/>
+        <br/>
+        <strong>ACHTUNG</strong>
+        <br/>
+        <br/>
+        Vergewissern Sie sich, dass ihre Datenbank Pakete mit einer Größe von mehr als 5 MB akzeptiert. Eine MySQL Datenbank akzeptiert beispielsweise standardmäßig Pakete mit einer Größe von maximal 1 MB. In diesem Fall muss der Wert für max_allowed_packet erhöht werden. Empfohlen werden 20 MB.<br/>
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroInstall>
+    <IntroInstall Type="pre" Title="Install Information" Lang="es"><![CDATA[
+        <br/>
+        <strong>BIENVENIDO</strong>
+        <br/>
+        <br/>
+        Usted est&aacute; a punto de instalar el paquete CRDahsboardKPIs.<br/>
+        <br/>
+        <br/>
+        <strong>ATENCI&Oacute;N</strong>
+        <br/>
+        <br/>
+        Por favor aseg&uacute;rese que su base de datos acepte paquetes de m&aacute;s de 5 MB de tama&ntilde;o. Por ejemplo una base de datos de MySQL acepta paquetes de m&aacute;s de 1 MB predefinido. En este caso la configuraci&oacute;n max_allowed_packet debe ser incrementada. El tama&ntilde;o recomendado es 20 MB.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroInstall>
+    <IntroInstall Type="post" Title="Installation Information" Lang="en"><![CDATA[
+        <br/>
+        <strong>NOTICE</strong>
+        <br/>
+        <br/>
+        If this system is using mod_perl, please restart the web server after the installation is complete.
+        <br/>
+        <br/>
+        The use of custom themes could prevent the correct behavior of this package.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroInstall>
+    <IntroInstall Type="post" Title="Installation Information" Lang="de"><![CDATA[
+        <br/>
+        <strong>HINWEIS</strong>
+        <br/>
+        <br/>
+        Wenn dieses System mod_perl verwendet, starten Sie den Web-Server neu, nachdem die Installation abgeschlossen ist.
+        <br/>
+        <br/>
+        Die Verwendung eines benutzerdefinierten Oberflächen-Schema kann das richtige Verhalten dieses Pakets verhindern.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroInstall>
+    <IntroInstall Type="post" Title="Installation Information" Lang="es"><![CDATA[
+        <br/>
+        <strong>AVISO</strong>
+        <br/>
+        <br/>
+        Si este sistema utiliza mod_perl, por favor reinicie el servidor web, cuando la instalaci&oacute;n halla concluido.<br/>
+        <br/>
+        <br/>
+        El uso de temas personalizados puede impedir el correcto funcionamiento de este paquete.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroInstall>
+    <IntroUpgrade Type="pre" Title="Upgrade Information" Lang="en"><![CDATA[
+        <br/>
+        <strong>WELCOME</strong>
+        <br/>
+        <br/>
+        You are about to upgrade the package CRDahsboardKPIs.<br/>
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUpgrade>
+    <IntroUpgrade Type="pre" Title="Upgrade Information" Lang="de"><![CDATA[
+        <br/>
+        <strong>WILLKOMMEN</strong>
+        <br/>
+        <br/>
+        Sie sind im Begriff das Paket CRDahsboardKPIs zu aktualisieren.<br/>
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUpgrade>
+    <IntroUpgrade Type="pre" Title="Upgrade Information" Lang="es"><![CDATA[
+        <br/>
+        <strong>BIENVENIDO</strong>
+        <br/>
+        <br/>
+        Usted est&aacute; apunto de actualizar el paquete CRDahsboardKPIs.<br/>
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUpgrade>
+    <IntroUpgrade Type="post" Title="Upgrade Information" Lang="en"><![CDATA[
+        <br/>
+        <strong>NOTICE</strong>
+        <br/>
+        <br/>
+        If this system is using mod_perl, please restart the web server after the installation is complete.
+        <br/>
+        <br/>
+        The use of custom themes could prevent the correct behavior of this package.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUpgrade>
+    <IntroUpgrade Type="post" Title="Installation Information" Lang="de"><![CDATA[
+        <br/>
+        <strong>HINWEIS</strong>
+        <br/>
+        <br/>
+        Wenn dieses System mod_perl verwendet, starten Sie den Web-Server neu, nachdem die Installation abgeschlossen ist.
+        <br/>
+        <br/>
+        Die Verwendung eines benutzerdefinierten Oberflächen-Schema kann das richtige Verhalten dieses Pakets verhindern.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUpgrade>
+    <IntroUpgrade Type="post" Title="Upgrade Information" Lang="es"><![CDATA[
+        <br/>
+        <strong>AVISO</strong>
+        <br/>
+        <br/>
+        Si este sistema utiliza mod_perl, por favor reinicie el servidor web, cuando la instalaci&oacute;n halla concluido.<br/>
+        <br/>
+        <br/>
+        El uso de temas personalizados puede impedir el correcto funcionamiento de este paquete.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUpgrade>
+    <IntroUninstall Type="pre" Title="Uninstallation Information" Lang="en"><![CDATA[
+        <br/>
+        <strong>ATTENTION</strong>
+        <br/>
+        <br/>
+        If you uninstall this package, all database tables that were created during installation will be deleted.
+        All data from these tables will be irrevocably lost!
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUninstall>
+    <IntroUninstall Type="pre" Title="Uninstallation Information" Lang="de"><![CDATA[
+        <br/>
+        <strong>ACHTUNG</strong>
+        <br/>
+        <br/>
+        Bei der Deinstallation werden die von diesem Paket angelegten Datenbank-Tabellen gelöscht.
+        Alle darin enthaltenen Daten gehen unwiderruflich verloren!
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUninstall>
+    <IntroUninstall Type="pre" Title="Uninstallation Information" Lang="es"><![CDATA[
+        <br/>
+        <strong>ATENCI&Oacute;N</strong>
+        <br/>
+        <br/>
+        Si usted desinstala este paquete, todas las tablas de la base de datos creadas durante la instalaci&oacute;n ser&aacute;n borradas.
+        &iexcl;Todos los datos de esas tablas se perder&aacute;n irrevocablemente!.
+        <br/>
+        <br/>
+        ((enjoy))<br/>
+        <br/>
+    ]]></IntroUninstall>
+</otrs_package>
