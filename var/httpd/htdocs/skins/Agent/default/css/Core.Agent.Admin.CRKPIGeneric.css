@@ -1,0 +1,21 @@
+/**
+ * @project     CRDashboardKPI - Agent Frontend
+ * @copyright   Carlos Rodríguez
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "Default"
+ * @section     Application
+ * @subsection  KPI Administration
+ */
+
+@media screen,projection,tv,handheld {
+
+.CodeMirror {
+    width: 75%;
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+}
