@@ -610,7 +610,7 @@ get KPI list
 
     or
 
-    my $List = $DynamicFieldObject->DynamicFieldList(
+    my $List = $KPIObject->KPIList(
         Valid => 0,             # optional, defaults to 1
 
         ResultType => 'HASH',   # optional, 'ARRAY' or 'HASH', defaults to 'ARRAY'
@@ -683,7 +683,7 @@ sub KPIList {
 
         # set cache
         $Self->{CacheObject}->Set(
-            Type  => 'DynamicField',
+            Type  => 'CRKPI',
             Key   => $CacheKey,
             Value => \%Data,
             TTL   => $Self->{CacheTTL},
@@ -700,7 +700,7 @@ sub KPIList {
 
         # set cache
         $Self->{CacheObject}->Set(
-            Type  => 'DynamicField',
+            Type  => 'CRKPI',
             Key   => $CacheKey,
             Value => \@Data,
             TTL   => $Self->{CacheTTL},
