@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<otrs_config version="1.0" init="Changes">
+    <ConfigItem Name="CRDashboardKPIs::CacheTTL" Required="1" Valid="1">
+        <Description Translatable="1">Cache time in seconds for the KPI backend.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>Core::Cache</SubGroup>
+        <Setting>
+            <String Regex="">3600</String><!-- default 1 hour -->
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Frontend::Module###AdminCRKPI" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>Frontend::Admin::ModuleRegistration</SubGroup>
+        <Setting>
+            <FrontendModuleReg>
+                <Group>admin</Group>
+                <Description>Admin</Description>
+                <Title Translatable="1">Key Performance Indicators GUI</Title>
+                <NavBarName>Admin</NavBarName>
+                <NavBarModule>
+                    <Module>Kernel::Output::HTML::NavBarModuleAdmin</Module>
+                    <Name Translatable="1">Key Performance Indicators</Name>
+                    <Description Translatable="1">Create and manage KPIs.</Description>
+                    <Block>Ticket</Block>
+                    <Prio>1500</Prio>
+                </NavBarModule>
+                <Loader>
+<!--
+                    <CSS></CSS>
+-->
+                    <JavaScript>Core.Agent.Admin.CRKPI.js</JavaScript>
+                </Loader>
+            </FrontendModuleReg>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="PreferencesGroups###KPIOverviewPageShown" Required="0" Valid="1">
+        <Description Translatable="1">Parameters for the pages (in which the KPIs are shown) of the Key Performance Indicators overview.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>Frontend::Agent::Preferences</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::PreferencesGeneric</Item>
+                <Item Key="Column">Other Settings</Item>
+                <Item Key="Label" Translatable="1">Key Performance Inbdicators Overview Limit</Item>
+                <Item Key="Key" Translatable="1">KPIs limit per page for Key Performance Indicators Overview</Item>
+                <Item Key="Data">
+                    <Hash>
+                        <Item Key="10">10</Item>
+                        <Item Key="15">15</Item>
+                        <Item Key="20">20</Item>
+                        <Item Key="25">25</Item>
+                        <Item Key="30">30</Item>
+                        <Item Key="35">35</Item>
+                    </Hash>
+                </Item>
+                <Item Key="DataSelected">25</Item>
+                <Item Key="PrefKey">AdminKPIOverviewPageShown</Item>
+                <Item Key="Prio">8000</Item>
+                <Item Key="Active">0</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Frontend::Module###AdminCRKPIGeneric" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>Frontend::Admin::ModuleRegistration</SubGroup>
+        <Setting>
+            <FrontendModuleReg>
+                <Group>admin</Group>
+                <Description>Admin</Description>
+                <Title Translatable="1">KPI Generic Backend GUI</Title>
+                <Loader>
+                    <CSS>Core.Agent.Admin.CRKPIGeneric.css</CSS>
+                    <CSS>thirdparty/codemirror.3.16/lib/codemirror.css</CSS>
+                    <JavaScript>Core.Agent.Admin.CRKPI.js</JavaScript>
+                    <JavaScript>thirdparty/codemirror.3.16/lib/codemirror.js</JavaScript>
+                    <JavaScript>thirdparty/codemirror.3.16/mode/sql/sql.js</JavaScript>
+                </Loader>
+            </FrontendModuleReg>
+        </Setting>
+    </ConfigItem>
+
+
+    <ConfigItem Name="CRDashboardKPIs::ObjectType###Generic" Required="0" Valid="1">
+        <Description Translatable="1">DynamicField object registration.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>CRDashboardKPIs::ObjectType::Registration</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="DisplayName" Translatable="1">Generic</Item>
+                <Item Key="ConfigDialog">AdminCRKPIGeneric</Item>
+                <Item Key="DashboardBackend">DashboardCRKPIGeneric</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+
+
+    <ConfigItem Name="Loader::Agent::CommonJS###100-CRDashboardKPIsJustGage" Required="1" Valid="1">
+        <Description Translatable="1">List of JS files to always be loaded for the agent interface.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Array>
+                <Item>thirdparty/JustGage.1.0.1/resources/js/justgage.1.0.1.js</Item>
+                <Item>thirdparty/JustGage.1.0.1/resources/js/raphael.2.1.0.min.js</Item>
+            </Array>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Loader::Agent::CommonJS###100-CRDashboardKPIs" Required="1" Valid="1">
+        <Description Translatable="1">List of JS files to always be loaded for the agent interface.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Array>
+                <Item>Core.Agent.DashboardCRKPI.js</Item>
+            </Array>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="DashboardBackend###0099-CRDashboardKPIs" Required="0" Valid="1">
+        <Description Translatable="1">Parameters for the dashboard backend of the KPIs widget of the agent interface. "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.</Description>
+        <Group>CRDashboardKPIs</Group>
+        <SubGroup>Frontend::Agent::Dashboard</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::DashboardCRKPI</Item>
+                <Item Key="Title" Translatable="1">Key Performance Indicators</Item>
+                <Item Key="Description" Translatable="1">Provides Key Performance Indicator graphics.</Item>
+                <Item Key="Permission">rw</Item>
+                <Item Key="QueuePermissionGroup">users</Item>
+                <Item Key="Block">ContentLarge</Item>
+                <Item Key="Group"></Item>
+                <Item Key="Default">1</Item>
+                <Item Key="CacheTTLLocal">0.5</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+</otrs_config>
