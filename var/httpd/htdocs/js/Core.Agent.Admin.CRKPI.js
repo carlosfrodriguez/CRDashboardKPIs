@@ -2,7 +2,7 @@
 // Core.Agent.Admin.CRKPI.js - provides the special module functions for the KPIs.
 // Copyright (C) 2001-2012 OTRS Carlos Rodríguez
 // --
-// Basid in OTRS file Core.Agent.Admin.DynamicField.js
+// Based in OTRS file Core.Agent.Admin.DynamicField.js
 // Copyright (C) 2001-2012 OTRS AG, http://otrs.org/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
