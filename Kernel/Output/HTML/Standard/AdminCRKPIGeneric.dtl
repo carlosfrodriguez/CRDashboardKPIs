@@ -164,6 +164,10 @@ $('#KPITest').bind('click', function() {
    },
    CommunicationErrorMsg = '$JSText{"Communication Error"}';
 
+   if (CodeEditor !== undefined){
+       Data.SQLStatement = CodeEditor.getValue();
+   }
+
     Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), Data, function (Response) {
 
         if (!Response) {
@@ -219,6 +223,17 @@ $('#KPITest').bind('click', function() {
       min: 0,
       max: 100,
       title: "New"
+    }),
+    CodeEditor = CodeMirror.fromTextArea($('#SQLStatement')[0], {
+        mode: 'text/x-sql',
+        indentWithTabs: true,
+        smartIndent: true,
+        lineNumbers: true,
+        matchBrackets : true,
+        autofocus: true
+      });
+    CodeEditor.on("blur", function(){
+        $('#SQLStatement').val(CodeEditor.getValue());
     });
 //]]></script>
 <!-- dtl:js_on_document_complete -->
