@@ -124,13 +124,22 @@ sub _AddAction {
     my %Errors;
     my %GetParam;
 
-    for my $Needed (qw(Name Min Max SQLStatement ObjectType)) {
+    for my $Needed (qw(Name SQLStatement ObjectType)) {
         $GetParam{$Needed} = $Self->{ParamObject}->GetParam( Param => $Needed );
         if ( !$GetParam{$Needed} ) {
             $Errors{ $Needed . 'ServerError' }        = 'ServerError';
             $Errors{ $Needed . 'ServerErrorMessage' } = 'This field is required.';
         }
     }
+
+    for my $Needed (qw(Min Max)) {
+        $GetParam{$Needed} = $Self->{ParamObject}->GetParam( Param => $Needed );
+        if ( $GetParam{$Needed} eq '' ) {
+            $Errors{ $Needed . 'ServerError' }        = 'ServerError';
+            $Errors{ $Needed . 'ServerErrorMessage' } = 'This field is required.';
+        }
+    }
+
 
     my @GroupIDs = $Self->{ParamObject}->GetArray( Param => 'GroupIDs' );
         $GetParam{GroupIDs} =\@GroupIDs;
@@ -279,13 +288,22 @@ sub _ChangeAction {
     my %Errors;
     my %GetParam;
 
-    for my $Needed (qw(Name Min Max SQLStatement ObjectType)) {
+    for my $Needed (qw(Name SQLStatement ObjectType)) {
         $GetParam{$Needed} = $Self->{ParamObject}->GetParam( Param => $Needed );
         if ( !$GetParam{$Needed} ) {
             $Errors{ $Needed . 'ServerError' }        = 'ServerError';
             $Errors{ $Needed . 'ServerErrorMessage' } = 'This field is required.';
         }
     }
+
+    for my $Needed (qw(Min Max)) {
+        $GetParam{$Needed} = $Self->{ParamObject}->GetParam( Param => $Needed );
+        if ( $GetParam{$Needed} eq '' ) {
+            $Errors{ $Needed . 'ServerError' }        = 'ServerError';
+            $Errors{ $Needed . 'ServerErrorMessage' } = 'This field is required.';
+        }
+    }
+
 
     my @GroupIDs = $Self->{ParamObject}->GetArray( Param => 'GroupIDs' );
         $GetParam{GroupIDs} =\@GroupIDs;
