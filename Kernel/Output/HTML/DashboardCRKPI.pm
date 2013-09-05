@@ -101,9 +101,6 @@ sub Run {
         ResultType => 'HASH',
     );
 
-use Data::Dumper;
-print STDERR Dumper($KPIList); #TODO Delete Developers Oputput
-
     my $Counter = 1;
 
     KPI:
