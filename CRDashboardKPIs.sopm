@@ -1,13 +1,213 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_package version="1.0">
     <Name>CRDashboardKPIs</Name>
-    <Version>0.0.0</Version>
-    <Framework>3.2.x</Framework>
+    <Version>0.0.1</Version>
+    <Framework>3.3.x</Framework>
     <Vendor>Carlos Rodriguez</Vendor>
     <URL>http://https://github.com/carlosfrodriguez</URL>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <Description Lang="en">The CR Dashboard KPIs Package.</Description>
     <Filelist>
+        <File Permission="644" Location="Kernel/Config/Files/CRDashboardKPIs.xml"/>
+        <File Permission="644" Location="Kernel/Modules/AdminCRKPI.pm"/>
+        <File Permission="644" Location="Kernel/Modules/AdminCRKPIGeneric.pm"/>
+        <File Permission="644" Location="Kernel/Output/HTML/DashboardCRKPI.pm"/>
+        <File Permission="644" Location="Kernel/Output/HTML/DashboardCRKPIGeneric.pm"/>
+        <File Permission="644" Location="Kernel/Output/HTML/Standard/AdminCRKPI.dtl"/>
+        <File Permission="644" Location="Kernel/Output/HTML/Standard/AdminCRKPIGeneric.dtl"/>
+        <File Permission="644" Location="Kernel/Output/HTML/Standard/AgentDashboardKPI.dtl"/>
+        <File Permission="644" Location="Kernel/System/CRKPI.pm"/>
+        <File Permission="644" Location="scripts/test/CRKPI.t"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/Core.Agent.Admin.CRKPI.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/Core.Agent.DashboardCRKPI.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/comment/comment.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/comment/continuecomment.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/dialog/dialog.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/dialog/dialog.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/display/fullscreen.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/display/fullscreen.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/display/placeholder.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/edit/closebrackets.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/edit/closetag.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/edit/continuelist.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/edit/matchbrackets.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/edit/matchtags.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/edit/trailingspace.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/fold/brace-fold.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/fold/comment-fold.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/fold/foldcode.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/fold/foldgutter.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/fold/indent-fold.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/fold/xml-fold.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/anyword-hint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/html-hint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/javascript-hint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/pig-hint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/python-hint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/show-hint.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/show-hint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/hint/xml-hint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/lint/coffeescript-lint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/lint/javascript-lint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/lint/json-lint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/lint/lint.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/lint/lint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/merge/dep/diff_match_patch.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/merge/merge.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/merge/merge.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/mode/loadmode.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/mode/multiplex.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/mode/multiplex_test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/mode/overlay.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/runmode/colorize.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/runmode/runmode-standalone.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/runmode/runmode.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/runmode/runmode.node.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/scroll/scrollpastend.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/search/match-highlighter.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/search/search.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/search/searchcursor.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/selection/active-line.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/selection/mark-selection.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/tern/tern.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/tern/tern.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/addon/tern/worker.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/bin/authors.sh"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/bin/compress"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/bin/lint"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/bin/source-highlight"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/keymap/emacs.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/keymap/extra.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/keymap/vim.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/lib/codemirror.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/.DS_Store"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/apl/apl.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/asterisk/asterisk.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/clike/clike.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/clojure/clojure.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/cobol/cobol.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/coffeescript/coffeescript.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/commonlisp/commonlisp.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/css/css.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/css/scss_test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/css/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/d/d.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/diff/diff.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/ecl/ecl.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/erlang/erlang.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/gas/gas.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/gfm/gfm.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/gfm/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/go/go.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/groovy/groovy.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/haml/haml.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/haml/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/haskell/haskell.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/haxe/haxe.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/htmlembedded/htmlembedded.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/htmlmixed/htmlmixed.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/http/http.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/jade/jade.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/javascript/javascript.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/javascript/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/jinja2/jinja2.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/less/less.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/livescript/livescript.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/livescript/livescript.ls"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/lua/lua.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/markdown/markdown.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/markdown/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/meta.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/mirc/mirc.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/nginx/nginx.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/ntriples/ntriples.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/ocaml/ocaml.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/pascal/pascal.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/perl/perl.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/php/php.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/pig/pig.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/properties/properties.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/python/python.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/q/q.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/r/r.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/rpm/changes/changes.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/rpm/spec/spec.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/rpm/spec/spec.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/rst/rst.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/ruby/ruby.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/rust/rust.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/sass/sass.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/scheme/scheme.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/shell/shell.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/sieve/sieve.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/smalltalk/smalltalk.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/smarty/smarty.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/smartymixed/smartymixed.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/sparql/sparql.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/sql/sql.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/stex/stex.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/stex/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/tcl/tcl.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/tiddlywiki/tiddlywiki.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/tiddlywiki/tiddlywiki.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/tiki/tiki.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/tiki/tiki.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/turtle/turtle.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/vb/vb.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/vbscript/vbscript.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/velocity/velocity.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/verilog/verilog.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/xml/xml.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/xquery/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/xquery/xquery.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/yaml/yaml.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/mode/z80/z80.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/comment_test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/doc_test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/driver.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/emacs_test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/index.html"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/lint/acorn.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/lint/lint.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/lint/parse-js.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/lint/walk.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/mode_test.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/mode_test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/phantom_driver.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/run.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/codemirror.3.16/test/vim_test.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/justGage.1.0.1/resources/js/justgage.1.0.1.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/justGage.1.0.1/resources/js/justgage.1.0.1.min.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/js/thirdparty/justGage.1.0.1/resources/js/raphael.2.1.0.min.js"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/Core.Agent.Admin.CRKPIGeneric.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/lib/codemirror.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/3024-day.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/3024-night.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/ambiance-mobile.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/ambiance.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/base16-dark.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/base16-light.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/blackboard.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/cobalt.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/eclipse.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/elegant.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/erlang-dark.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/lesser-dark.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/midnight.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/monokai.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/neat.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/night.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/paraiso-dark.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/paraiso-light.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/rubyblue.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/solarized.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/the-matrix.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/tomorrow-night-eighties.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/twilight.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/vibrant-ink.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/xq-dark.css"/>
+        <File Permission="644" Location="var/httpd/htdocs/skins/Agent/default/css/thirdparty/codemirror.3.16/theme/xq-light.css"/>
     </Filelist>
     <DatabaseInstall Type="post">
         <TableCreate Name="cr_kpi">
@@ -51,6 +251,7 @@
             </ForeignKey>
         </TableCreate>
     </DatabaseInstall>
+<!--
     <CodeInstall Type="post"><![CDATA[
 
         # define function name
@@ -237,18 +438,13 @@
         }
 
     ]]></CodeUninstall>
+-->
     <IntroInstall Type="pre" Title="Install Information" Lang="en"><![CDATA[
         <br/>
         <strong>WELCOME</strong>
         <br/>
         <br/>
         You are about to install the package CRDahsboardKPIs.<br/>
-        <br/>
-        <br/>
-        <strong>ATTENTION</strong>
-        <br/>
-        <br/>
-        Make sure your database accepts packages over 5 MB in size. A MySQL database for example accepts packages up to 1 MB by default. In this case, the value for max_allowed_packet must be increased. The recommended maximum size accepted is 20 MB.<br/>
         <br/>
         <br/>
         ((enjoy))<br/>
@@ -262,12 +458,6 @@
         Sie sind im Begriff das Paket CRDahsboardKPIs zu installieren.<br/>
         <br/>
         <br/>
-        <strong>ACHTUNG</strong>
-        <br/>
-        <br/>
-        Vergewissern Sie sich, dass ihre Datenbank Pakete mit einer Größe von mehr als 5 MB akzeptiert. Eine MySQL Datenbank akzeptiert beispielsweise standardmäßig Pakete mit einer Größe von maximal 1 MB. In diesem Fall muss der Wert für max_allowed_packet erhöht werden. Empfohlen werden 20 MB.<br/>
-        <br/>
-        <br/>
         ((enjoy))<br/>
         <br/>
     ]]></IntroInstall>
@@ -277,12 +467,6 @@
         <br/>
         <br/>
         Usted est&aacute; a punto de instalar el paquete CRDahsboardKPIs.<br/>
-        <br/>
-        <br/>
-        <strong>ATENCI&Oacute;N</strong>
-        <br/>
-        <br/>
-        Por favor aseg&uacute;rese que su base de datos acepte paquetes de m&aacute;s de 5 MB de tama&ntilde;o. Por ejemplo una base de datos de MySQL acepta paquetes de m&aacute;s de 1 MB predefinido. En este caso la configuraci&oacute;n max_allowed_packet debe ser incrementada. El tama&ntilde;o recomendado es 20 MB.
         <br/>
         <br/>
         ((enjoy))<br/>
