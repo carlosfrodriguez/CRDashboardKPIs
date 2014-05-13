@@ -118,6 +118,7 @@ add a new KPI
         Max           => 100,
         UserID        => 123,
     );
+
 =cut
 
 sub KPIAdd {
@@ -164,8 +165,8 @@ sub KPIAdd {
     }
 
     # check min and max
-    for my $Value qw(Min Max) {
-        if ( !IsInteger( $Param{$Value} ) ){
+    for my $Value (qw(Min Max)) {
+        if ( !IsInteger( $Param{$Value} ) ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
                 Message  => "KPI $Value value should be an integer!",
@@ -176,7 +177,7 @@ sub KPIAdd {
 
     # check if Name already exists
     return if !$Self->{DBObject}->Prepare(
-        SQL   => "
+        SQL => "
             SELECT id FROM cr_kpi
             WHERE $Self->{Lower}(name) = $Self->{Lower}(?)",
         Bind  => [ \$Param{Name} ],
@@ -210,7 +211,7 @@ sub KPIAdd {
                 create_time, create_by, change_time, change_by)
             VALUES (?, ?, ?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)',
         Bind => [
-            \$Param{Name},  \$Param{Comments}, \$Param{ObjectType}, \$Config,
+            \$Param{Name}, \$Param{Comments}, \$Param{ObjectType}, \$Config,
             \$Param{ValidID}, \$Param{Min}, \$Param{Max}, \$Param{UserID}, \$Param{UserID},
         ],
     );
@@ -268,7 +269,7 @@ sub KPIDelete {
         if ( !$Param{$Key} ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
-                Message => "Need $Key!"
+                Message  => "Need $Key!"
             );
             return;
         }
@@ -283,7 +284,7 @@ sub KPIDelete {
 
     # delete KPI group ids
     return if !$Self->{DBObject}->Do(
-        SQL  => '
+        SQL => '
             DELETE FROM cr_kpi_group
             WHERE kpi_id = ?',
         Bind => [ \$Param{ID} ],
@@ -291,7 +292,7 @@ sub KPIDelete {
 
     # delete KPI
     return if !$Self->{DBObject}->Do(
-        SQL  => '
+        SQL => '
             DELETE FROM cr_kpi
             WHERE id = ?',
         Bind => [ \$Param{ID} ],
@@ -376,7 +377,7 @@ sub KPIGet {
     # sql
     if ( $Param{ID} ) {
         return if !$Self->{DBObject}->Prepare(
-            SQL =>'
+            SQL => '
                 SELECT id, name, comments, object_type, config, valid_id, min, max, create_time,
                     create_by, change_time, change_by
                 FROM cr_kpi
@@ -386,7 +387,7 @@ sub KPIGet {
     }
     else {
         return if !$Self->{DBObject}->Prepare(
-            SQL =>'
+            SQL => '
                 SELECT id, name, comments, object_type, config, valid_id, min, max, create_time,
                     create_by, change_time, change_by
                 FROM cr_kpi
@@ -477,6 +478,7 @@ update KPI details
 Returns:
 
     $Success = 1;                                             # or undef
+
 =cut
 
 sub KPIUpdate {
@@ -523,8 +525,8 @@ sub KPIUpdate {
     }
 
     # check min and max
-    for my $Value qw(Min Max) {
-        if ( !IsInteger( $Param{$Value} ) ){
+    for my $Value (qw(Min Max)) {
+        if ( !IsInteger( $Param{$Value} ) ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
                 Message  => "KPI $Value value should be an integer!",
@@ -535,11 +537,11 @@ sub KPIUpdate {
 
     # check if Name already exists
     return if !$Self->{DBObject}->Prepare(
-        SQL   => "
+        SQL => "
             SELECT id FROM cr_kpi
             WHERE $Self->{Lower}(name) = $Self->{Lower}(?)
                 AND id != ?",
-        Bind  => [ \$Param{Name}, \$Param{ID} ],
+        Bind => [ \$Param{Name}, \$Param{ID} ],
         Limit => 1,
     );
 
@@ -571,14 +573,14 @@ sub KPIUpdate {
                 change_time = current_timestamp, change_by = ?
             WHERE id = ?',
         Bind => [
-            \$Param{Name},  \$Param{Comments}, \$Param{ObjectType}, \$Config, \$Param{ValidID},
+            \$Param{Name}, \$Param{Comments}, \$Param{ObjectType}, \$Config, \$Param{ValidID},
             \$Param{Min}, \$Param{Max}, \$Param{UserID}, \$Param{ID},
         ],
     );
 
     # delete KPI group ids
     return if !$Self->{DBObject}->Do(
-        SQL  => '
+        SQL => '
             DELETE FROM cr_kpi_group
             WHERE kpi_id = ?',
         Bind => [ \$Param{ID} ],
@@ -726,4 +728,3 @@ the enclosed file COPYING for license information (AGPL). If you
 did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
 
 =cut
-
