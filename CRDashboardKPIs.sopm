@@ -251,6 +251,10 @@
             </ForeignKey>
         </TableCreate>
     </DatabaseInstall>
+    <DatabaseUninstall Type="pre">
+        <TableDrop Name="cr_kpi_group"/>
+        <TableDrop Name="cr_kpi"/>
+    </DatabaseUninstall>
 <!--
     <CodeInstall Type="post"><![CDATA[
 
