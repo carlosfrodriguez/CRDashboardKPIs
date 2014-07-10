@@ -207,7 +207,7 @@ sub KPIAdd {
     # create the kpi entry in the DB
     return if !$Self->{DBObject}->Do(
         SQL => '
-            INSERT INTO cr_kpi (name, comments, object_type, config, valid_id, min, max,
+            INSERT INTO cr_kpi (name, comments, object_type, config, valid_id, min_value, max_value,
                 create_time, create_by, change_time, change_by)
             VALUES (?, ?, ?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)',
         Bind => [
@@ -378,8 +378,8 @@ sub KPIGet {
     if ( $Param{ID} ) {
         return if !$Self->{DBObject}->Prepare(
             SQL => '
-                SELECT id, name, comments, object_type, config, valid_id, min, max, create_time,
-                    create_by, change_time, change_by
+                SELECT id, name, comments, object_type, config, valid_id, min_value, max_value,
+                    create_time, create_by, change_time, change_by
                 FROM cr_kpi
                 WHERE id = ?',
             Bind => [ \$Param{ID} ],
@@ -388,8 +388,8 @@ sub KPIGet {
     else {
         return if !$Self->{DBObject}->Prepare(
             SQL => '
-                SELECT id, name, comments, object_type, config, valid_id, min, max, create_time,
-                    create_by, change_time, change_by
+                SELECT id, name, comments, object_type, config, valid_id, min_value, max_value,
+                    create_time, create_by, change_time, change_by
                 FROM cr_kpi
                 WHERE name = ?',
             Bind => [ \$Param{Name} ],
@@ -569,8 +569,8 @@ sub KPIUpdate {
     return if !$Self->{DBObject}->Do(
         SQL => '
             UPDATE cr_kpi
-            SET name = ?, comments = ?, object_type = ?, config = ?, valid_id = ?, min=?, max=?,
-                change_time = current_timestamp, change_by = ?
+            SET name = ?, comments = ?, object_type = ?, config = ?, valid_id = ?, min_value = ?,
+                max_value = ?, change_time = current_timestamp, change_by = ?
             WHERE id = ?',
         Bind => [
             \$Param{Name}, \$Param{Comments}, \$Param{ObjectType}, \$Config, \$Param{ValidID},
