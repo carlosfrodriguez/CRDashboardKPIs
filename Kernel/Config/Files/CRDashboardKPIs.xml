@@ -72,10 +72,10 @@
                 <Title Translatable="1">KPI Generic Backend GUI</Title>
                 <Loader>
                     <CSS>Core.Agent.Admin.CRKPIGeneric.css</CSS>
-                    <CSS>thirdparty/codemirror.3.16/lib/codemirror.css</CSS>
+                    <CSS>thirdparty/codemirror.4.3/lib/codemirror.css</CSS>
                     <JavaScript>Core.Agent.Admin.CRKPI.js</JavaScript>
-                    <JavaScript>thirdparty/codemirror.3.16/lib/codemirror.js</JavaScript>
-                    <JavaScript>thirdparty/codemirror.3.16/mode/sql/sql.js</JavaScript>
+                    <JavaScript>thirdparty/codemirror.4.3/lib/codemirror.js</JavaScript>
+                    <JavaScript>thirdparty/codemirror.4.3/mode/sql/sql.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
